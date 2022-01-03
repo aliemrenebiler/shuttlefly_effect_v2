@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'database/texts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,13 +35,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('START GAME PAGE'),
-        backgroundColor: Colors.red,
-      ),
       body: Center(
-        // ignore: deprecated_member_use
-        child: FlatButton(
+        child: MaterialButton(
           child: const Text('Play'),
           color: Colors.red,
           onPressed: () => Navigator.pushNamed(context, '/game'),
@@ -50,16 +46,81 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-// New Game and Continue buttons included
 class GameScreen extends StatelessWidget {
-  const GameScreen({
-    Key? key,
-  }) : super(key: key);
+  const GameScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('This is Continue Page'),
-    );
+    return Scaffold(
+        body: Row(
+      children: [
+        Column(
+          children: const [Text('blabla'), Text('long bla bla bla...')],
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: CharStateBox(index: 0),
+                  flex: 1,
+                  child: CharStateBox(index: 1),
+                  flex: 1,
+                  child: CharStateBox(index: 2),
+                ),
+              ],
+            ),
+            Flexible(flex: 2, child: CharStateBox(index: 0)),
+            SizedBox(width: 20),
+            Expanded(child: CharStateBox(index: 1)),
+            SizedBox(width: 20),
+            Expanded(child: CharStateBox(index: 2)),
+          ],
+        )
+      ],
+    ));
+  }
+}
+
+class CharStateBox extends StatelessWidget {
+  final int index;
+  // Character character;
+  CharStateBox({required this.index /*, this.character*/});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Row(
+      children: [
+        // Character photo
+        Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: const Icon(Icons.ac_unit),
+            ),
+          ],
+        ),
+
+        // Other
+        Column(
+          children: [
+            Row(
+              children: [
+                Text('character name'),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(Icons.arrow_back),
+                Icon(Icons.arrow_back),
+                Icon(Icons.arrow_back),
+                Icon(Icons.arrow_back),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ));
   }
 }
