@@ -10,55 +10,49 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: WelcomePage(),
-      ),
+    return MaterialApp(
+      routes: {
+        '/welcome': (context) => const WelcomeScreen(),
+        '/game': (context) => const GameScreen(),
+      },
+      home: const WelcomeScreen(),
     );
   }
 }
 
 // New Game button included
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: Text('Shuttlefly Effect'),
-          ),
-          TextButton(
-            child: const Text('New Game'),
-            onPressed: changePage,
-          ),
-          TextButton(
-            child: const Text('Continue'),
-            onPressed: changePage,
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('START GAME PAGE'),
+        backgroundColor: Colors.red,
+      ),
+      body: Center(
+        // ignore: deprecated_member_use
+        child: FlatButton(
+          child: const Text('Play'),
+          color: Colors.red,
+          onPressed: () => Navigator.pushNamed(context, '/game'),
+        ),
       ),
     );
   }
-
-  void changePage() {}
 }
 
 // New Game and Continue buttons included
-class ContinuePage extends StatelessWidget {
-  const ContinuePage({
+class GameScreen extends StatelessWidget {
+  const GameScreen({
     Key? key,
   }) : super(key: key);
 
@@ -66,20 +60,6 @@ class ContinuePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text('This is Continue Page'),
-    );
-  }
-}
-
-// The main game page that all the events happen
-class GamePage extends StatelessWidget {
-  const GamePage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('This is Game Page'),
     );
   }
 }
