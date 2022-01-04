@@ -1,39 +1,61 @@
 import 'package:flutter/material.dart';
-import '../database/texts.dart';
+import '../database/allvariables.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var event = Event("YIKILIYORUZ", "OHAAAA");
     return Scaffold(
       body: Row(
         children: [
           Expanded(
             flex: 1,
-            child: Column(
-              children: [
-                Text(event.title),
-                Text(event.desc),
-              ],
+            child: Container(
+              child: Column(
+                children: [
+                  Text(event.title),
+                  Text(event.desc),
+                ],
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.red,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+              ),
             ),
           ),
           Expanded(
             flex: 1,
             child: Column(
-              children: const [
+              children: [
                 Expanded(
                   flex: 1,
-                  child: CharStateBox(index: 0),
+                  child: CharStateBox(
+                      charName: char0.name,
+                      h: char0.health,
+                      o: char0.oxygen,
+                      p: char0.psycho,
+                      e: char0.energy),
                 ),
                 Expanded(
                   flex: 1,
-                  child: CharStateBox(index: 1),
+                  child: CharStateBox(
+                      charName: char1.name,
+                      h: char1.health,
+                      o: char1.oxygen,
+                      p: char1.psycho,
+                      e: char1.energy),
                 ),
                 Expanded(
                   flex: 1,
-                  child: CharStateBox(index: 2),
+                  child: CharStateBox(
+                      charName: char2.name,
+                      h: char2.health,
+                      o: char2.oxygen,
+                      p: char2.psycho,
+                      e: char2.energy),
                 ),
               ],
             ),
@@ -45,10 +67,21 @@ class GameScreen extends StatelessWidget {
 }
 
 class CharStateBox extends StatelessWidget {
-  final int index;
+  final String charName;
+  int h; // health
+  int o; // oxygen
+  int p; // psychology
+  int e; // energy
   // Character character;
-  const CharStateBox({Key? key, required this.index /*, this.character*/})
+  CharStateBox(
+      {Key? key,
+      required this.charName,
+      required this.h,
+      required this.o,
+      required this.p,
+      required this.e})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,13 +92,12 @@ class CharStateBox extends StatelessWidget {
             child: const Icon(Icons.ac_unit),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 flex: 1,
                 child: Container(
-                  alignment: Alignment.bottomCenter,
-                  child: const Text('character name'),
+                  alignment: Alignment.bottomLeft,
+                  child: Text(charName),
                 ),
               ),
               Expanded(
