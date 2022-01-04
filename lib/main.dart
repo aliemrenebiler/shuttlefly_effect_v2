@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'screens/gamescreen.dart';
+import 'package:flutter/services.dart';
+import '/screens/homescreen.dart';
+import '/screens/choosescreen.dart';
+import '/screens/gamescreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
+      overlays: [SystemUiOverlay.bottom]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 // App Widget
@@ -12,37 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/home',
       routes: {
-        '/welcomescreen': (context) => const WelcomeScreen(),
+        '/home': (context) => const Home(),
+        '/choose': (context) => const Choose(),
         '/gamescreen': (context) => const GameScreen(),
       },
-      home: const WelcomeScreen(),
-    );
-  }
-}
-
-// New Game button included
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          child: const Text("OYNA"),
-          onPressed: () {
-            Navigator.pushNamed(context, '/gamescreen');
-          },
-        ),
-      ),
     );
   }
 }
