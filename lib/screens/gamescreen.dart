@@ -6,34 +6,41 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var event = Event("YIKILIYORUZ", "OHAAAA");
     return Scaffold(
-        body: Row(
-      children: [
-        Column(
-          children: const [Text('blabla'), Text('long bla bla bla...')],
-        ),
-        Column(
-          children: [
-            Row(
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Column(
               children: [
-                Flexible(
+                Text(event.title),
+                Text(event.desc),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: const [
+                Expanded(
                   flex: 1,
                   child: CharStateBox(index: 0),
                 ),
-                Flexible(
+                Expanded(
                   flex: 1,
                   child: CharStateBox(index: 1),
                 ),
-                Flexible(
+                Expanded(
                   flex: 1,
                   child: CharStateBox(index: 2),
                 ),
               ],
             ),
-          ],
-        )
-      ],
-    ));
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -45,37 +52,37 @@ class CharStateBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Row(
-      children: [
-        // Character photo
-        Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: const Icon(Icons.ac_unit),
-            ),
-          ],
-        ),
-
-        // Other
-        Column(
-          children: [
-            Row(
-              children: const [
-                Text('character name'),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(Icons.arrow_back),
-                Icon(Icons.arrow_back),
-                Icon(Icons.arrow_back),
-                Icon(Icons.arrow_back),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ));
+      body: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: const Icon(Icons.ac_unit),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: const Text('character name'),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: const [
+                    Icon(Icons.arrow_back),
+                    Icon(Icons.arrow_back),
+                    Icon(Icons.arrow_back),
+                    Icon(Icons.arrow_back),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
