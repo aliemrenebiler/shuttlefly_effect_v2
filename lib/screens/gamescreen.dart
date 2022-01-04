@@ -66,7 +66,7 @@ class GameScreen extends StatelessWidget {
   }
 }
 
-class CharStateBox extends StatelessWidget {
+class CharStateBox extends StatefulWidget {
   final String charName;
   int h; // health
   int o; // oxygen
@@ -83,6 +83,11 @@ class CharStateBox extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<CharStateBox> createState() => _CharStateBoxState();
+}
+
+class _CharStateBoxState extends State<CharStateBox> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
@@ -97,7 +102,7 @@ class CharStateBox extends StatelessWidget {
                 flex: 1,
                 child: Container(
                   alignment: Alignment.bottomLeft,
-                  child: Text(charName),
+                  child: Text(widget.charName),
                 ),
               ),
               Expanded(
