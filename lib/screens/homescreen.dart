@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/shutterfly_effect_bg.png'),
+            image: AssetImage('assets/shuttlefly_effect_bg.png'),
             fit: BoxFit.cover,
           ),
         ),
