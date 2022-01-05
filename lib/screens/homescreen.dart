@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.contain,
-                  image: AssetImage('assets/shutterfly_effect_logo.png'),
+                  image: AssetImage('assets/shuttlefly_effect_logo.png'),
                 ),
               ),
             ),
