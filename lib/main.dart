@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '/screens/homescreen.dart';
 import '/screens/choosescreen.dart';
 import '/screens/gamescreen.dart';
@@ -21,10 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/homescreen',
       routes: {
-        '/home': (context) => const Home(),
-        '/choose': (context) => const Choose(),
+        '/homescreen': (context) => const HomeScreen(),
+        '/choosescreen': (context) => const ChooseScreen(),
         '/gamescreen': (context) => const GameScreen(),
       },
     );
