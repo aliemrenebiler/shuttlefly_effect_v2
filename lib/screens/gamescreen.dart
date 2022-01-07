@@ -25,9 +25,8 @@ class GameScreen extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char0.name,
-                        imgURL:
-                            'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                        charName: char0.charName,
+                        imgURL: char0.imgURL,
                         h: char0.health,
                         o: char0.oxygen,
                         p: char0.psycho,
@@ -36,9 +35,8 @@ class GameScreen extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char1.name,
-                        imgURL:
-                            'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                        charName: char1.charName,
+                        imgURL: char1.imgURL,
                         h: char1.health,
                         o: char1.oxygen,
                         p: char1.psycho,
@@ -47,9 +45,8 @@ class GameScreen extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char2.name,
-                        imgURL:
-                            'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                        charName: char2.charName,
+                        imgURL: char2.imgURL,
                         h: char2.health,
                         o: char2.oxygen,
                         p: char2.psycho,
@@ -171,62 +168,80 @@ class _CharStateBoxState extends State<CharStateBox> {
     return Container(
       child: Row(
         children: [
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: AspectRatio(
-              aspectRatio: 1.0,
-              child: ClipOval(
-                child: Image.network(
-                  widget.imgURL,
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                image: DecorationImage(
                   fit: BoxFit.cover,
+                  image: NetworkImage(
+                    widget.imgURL,
+                  ),
+                ),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: seBorderWidth,
+                  color: Color(seDarkCream),
                 ),
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.charName,
-                textAlign: TextAlign.left,
-                style: GoogleFonts.fredokaOne(
-                  color: Colors.red,
-                ),
-              ),
-              Row(
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(left: 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.red,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.charName,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.fredokaOne(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                    margin: const EdgeInsets.only(top: 10),
                   ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.red,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.red,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.red,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.red,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.red,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ],
       ),
       decoration: BoxDecoration(
-        color: Color(seCream),
+        color: Color(seLightCream),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
           width: seBorderWidth,
-          color: Color(seDarkCream),
+          color: Color(seCream),
         ),
       ),
       margin: const EdgeInsets.all(5),

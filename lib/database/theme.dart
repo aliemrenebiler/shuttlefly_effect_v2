@@ -5,8 +5,9 @@ var seDarkBlue = 0xFF002486;
 var sePinkyRed = 0xFFFF1744;
 var seDarkPinkyRed = 0xFFD50000;
 
-var seCream = 0xFFFFCDB2;
-var seDarkCream = 0xFFFFB4A2;
+var seLightCream = 0xFFFFCDB2;
+var seCream = 0xFFFFB4A2;
+var seDarkCream = 0xFFE18A6B;
 
 var seLightGrey = 0xFFE0E0E0;
 var seGrey = 0xFFBDBDBD;
