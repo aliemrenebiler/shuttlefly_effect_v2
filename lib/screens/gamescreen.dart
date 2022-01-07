@@ -141,28 +141,23 @@ class _EventBoxState extends State<EventBox> {
 }
 
 // CHARACTER STATE BOX
-class CharStateBox extends StatefulWidget {
+class CharStateBox extends StatelessWidget {
   final String charName;
   final String imgURL;
   int h; // health
   int o; // oxygen
   int p; // psychology
   int e; // energy
-  CharStateBox(
-      {Key? key,
-      required this.charName,
-      required this.imgURL,
-      required this.h,
-      required this.o,
-      required this.p,
-      required this.e})
-      : super(key: key);
 
-  @override
-  State<CharStateBox> createState() => _CharStateBoxState();
-}
-
-class _CharStateBoxState extends State<CharStateBox> {
+  CharStateBox({
+    Key? key,
+    required this.imgURL,
+    required this.charName,
+    required this.h,
+    required this.o,
+    required this.p,
+    required this.e,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -171,12 +166,12 @@ class _CharStateBoxState extends State<CharStateBox> {
           AspectRatio(
             aspectRatio: 1.0,
             child: Container(
-              margin: const EdgeInsets.all(5),
+              margin: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    widget.imgURL,
+                    imgURL,
                   ),
                 ),
                 shape: BoxShape.circle,
@@ -188,50 +183,61 @@ class _CharStateBoxState extends State<CharStateBox> {
             ),
           ),
           Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(left: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.charName,
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    charName,
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.fredokaOne(
+                      color: Colors.black,
+                      fontSize: 18,
                     ),
-                    margin: const EdgeInsets.only(top: 10),
                   ),
-                  Row(
+                  margin: const EdgeInsets.all(3),
+                ),
+                Expanded(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        color: Colors.red,
+                      Expanded(
+                        child: StateValueBox(
+                          text: 'Health',
+                          color: sePinkyRed,
+                          dColor: seDarkPinkyRed,
+                          value: h,
+                        ),
                       ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        color: Colors.red,
+                      Expanded(
+                        child: StateValueBox(
+                          text: 'Oxygen',
+                          color: seLightBlue,
+                          dColor: seBlue,
+                          value: o,
+                        ),
                       ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        color: Colors.red,
+                      Expanded(
+                        child: StateValueBox(
+                          text: 'Moral',
+                          color: sePurple,
+                          dColor: seDarkPurple,
+                          value: p,
+                        ),
                       ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        color: Colors.red,
+                      Expanded(
+                        child: StateValueBox(
+                          text: 'Energy',
+                          color: seYellow,
+                          dColor: seDarkYellow,
+                          value: e,
+                        ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -245,6 +251,65 @@ class _CharStateBoxState extends State<CharStateBox> {
         ),
       ),
       margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(2),
+    );
+  }
+}
+
+// STATE VALUE BOX
+class StateValueBox extends StatefulWidget {
+  final String text;
+  var color;
+  var dColor;
+  int value;
+  StateValueBox({
+    Key? key,
+    required this.text,
+    required this.color,
+    required this.dColor,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  _StateValueBoxState createState() => _StateValueBoxState();
+}
+
+class _StateValueBoxState extends State<StateValueBox> {
+  var value;
+  @override
+  Widget build(BuildContext context) {
+    value = widget.value;
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Text(
+            '$value',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.fredokaOne(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+          Text(
+            widget.text,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.fredokaOne(
+              color: Colors.white,
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(
+        color: Color(widget.color),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          width: seBorderWidth,
+          color: Color(widget.dColor),
+        ),
+      ),
+      margin: const EdgeInsets.all(3),
     );
   }
 }

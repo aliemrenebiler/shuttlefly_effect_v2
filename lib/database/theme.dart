@@ -13,5 +13,12 @@ var seLightGrey = 0xFFE0E0E0;
 var seGrey = 0xFFBDBDBD;
 var seDarkGrey = 0xFF9E9E9E;
 
+var seYellow = 0xFFF9A825;
+var seDarkYellow = 0xFFF57F17;
+
+var sePurple = 0xFF8E24AA;
+var seDarkPurple = 0xFF6A1B9A;
+
 var seBorderWidth = 5.0;
 var seButtonHeight = 60.0;
+var seTextBoxHeight = 50.0;

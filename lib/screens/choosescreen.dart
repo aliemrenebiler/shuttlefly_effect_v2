@@ -10,85 +10,76 @@ class ChooseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(seDarkBlue),
-      appBar: AppBar(
-        title: Text(
-          'CHOOSE CHARACTERS',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.fredokaOne(
-            color: Colors.white,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(seBlue),
-        leading: const BackButton(),
-        leadingWidth: 100,
-        actions: const [
-          DoneButton(),
-        ],
-      ),
       body: Container(
         margin: const EdgeInsets.all(10),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TopBarBox(),
             Expanded(
-              flex: 1,
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: CharacterBox(
-                      index: 1,
-                      imgURL: char0.imgURL,
-                      charName: char0.charName,
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CharacterBox(
+                            index: 1,
+                            imgURL: char0.imgURL,
+                            charName: char0.charName,
+                          ),
+                        ),
+                        SkillBox(
+                          index: 1,
+                          skillName: char0.skillName,
+                          skillDesc: char0.skillDesc,
+                        ),
+                      ],
                     ),
                   ),
-                  SkillBox(
-                    index: 1,
-                    skillName: char0.skillName,
-                    skillDesc: char0.skillDesc,
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CharacterBox(
+                            index: 2,
+                            imgURL: char1.imgURL,
+                            charName: char1.charName,
+                          ),
+                        ),
+                        SkillBox(
+                          index: 2,
+                          skillName: char1.skillName,
+                          skillDesc: char1.skillDesc,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CharacterBox(
+                            index: 3,
+                            imgURL: char2.imgURL,
+                            charName: char2.charName,
+                          ),
+                        ),
+                        SkillBox(
+                          index: 3,
+                          skillName: char2.skillName,
+                          skillDesc: char2.skillDesc,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CharacterBox(
-                      index: 2,
-                      imgURL: char1.imgURL,
-                      charName: char1.charName,
-                    ),
-                  ),
-                  SkillBox(
-                    index: 2,
-                    skillName: char1.skillName,
-                    skillDesc: char1.skillDesc,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CharacterBox(
-                      index: 3,
-                      imgURL: char2.imgURL,
-                      charName: char2.charName,
-                    ),
-                  ),
-                  SkillBox(
-                    index: 3,
-                    skillName: char2.skillName,
-                    skillDesc: char2.skillDesc,
-                  ),
-                ],
-              ),
-            ),
+            )
           ],
         ),
       ),
@@ -113,9 +104,10 @@ class CharacterBox extends StatefulWidget {
 
 class _CharacterBoxState extends State<CharacterBox> {
   var counter = 0;
+  var index;
   @override
   Widget build(BuildContext context) {
-    var index = widget.index;
+    index = widget.index;
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +173,7 @@ class _CharacterBoxState extends State<CharacterBox> {
                         fontSize: 35,
                       ),
                     ),
-                    height: seButtonHeight,
+                    height: seTextBoxHeight,
                     decoration: BoxDecoration(
                       color: Color(sePinkyRed),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -209,7 +201,7 @@ class _CharacterBoxState extends State<CharacterBox> {
                           fontSize: 20,
                         ),
                       ),
-                      height: seButtonHeight,
+                      height: seTextBoxHeight,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
@@ -248,7 +240,7 @@ class _CharacterBoxState extends State<CharacterBox> {
                         fontSize: 35,
                       ),
                     ),
-                    height: seButtonHeight,
+                    height: seTextBoxHeight,
                     decoration: BoxDecoration(
                       color: Color(sePinkyRed),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -295,9 +287,10 @@ class SkillBox extends StatefulWidget {
 
 class _SkillBoxState extends State<SkillBox> {
   var counter = 0;
+  var index;
   @override
   Widget build(BuildContext context) {
-    var index = widget.index;
+    index = widget.index;
     return Container(
       child: Column(
         children: [
@@ -340,7 +333,7 @@ class _SkillBoxState extends State<SkillBox> {
                         fontSize: 35,
                       ),
                     ),
-                    height: seButtonHeight,
+                    height: seTextBoxHeight,
                     decoration: BoxDecoration(
                       color: Color(seLightBlue),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -383,7 +376,7 @@ class _SkillBoxState extends State<SkillBox> {
                         fontSize: 20,
                       ),
                     ),
-                    height: seButtonHeight,
+                    height: seTextBoxHeight,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -420,7 +413,7 @@ class _SkillBoxState extends State<SkillBox> {
                         fontSize: 35,
                       ),
                     ),
-                    height: seButtonHeight,
+                    height: seTextBoxHeight,
                     decoration: BoxDecoration(
                       color: Color(seLightBlue),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -444,6 +437,43 @@ class _SkillBoxState extends State<SkillBox> {
         border: Border.all(
           width: seBorderWidth,
           color: Color(seGrey),
+        ),
+      ),
+    );
+  }
+}
+
+class TopBarBox extends StatelessWidget {
+  const TopBarBox({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const BackButton(),
+          Expanded(
+            child: Text(
+              'CHOOSE CHARACTERS',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.fredokaOne(
+                color: Colors.white,
+                fontSize: 25,
+              ),
+            ),
+          ),
+          const DoneButton(),
+        ],
+      ),
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: Color(seLightBlue),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          width: seBorderWidth,
+          color: Color(seBlue),
         ),
       ),
     );
@@ -535,20 +565,11 @@ class BackButton extends StatelessWidget {
           textAlign: TextAlign.center,
           style: GoogleFonts.fredokaOne(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
-        height: seButtonHeight,
+        height: 50,
         width: 100,
-        decoration: BoxDecoration(
-          color: Color(sePinkyRed),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-            width: seBorderWidth,
-            color: Color(seDarkPinkyRed),
-          ),
-        ),
-        margin: const EdgeInsets.all(5),
       ),
     );
   }
@@ -571,20 +592,11 @@ class DoneButton extends StatelessWidget {
           textAlign: TextAlign.center,
           style: GoogleFonts.fredokaOne(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
-        height: seButtonHeight,
+        height: 50,
         width: 100,
-        decoration: BoxDecoration(
-          color: Color(sePinkyRed),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-            width: seBorderWidth,
-            color: Color(seDarkPinkyRed),
-          ),
-        ),
-        margin: const EdgeInsets.all(5),
       ),
     );
   }
