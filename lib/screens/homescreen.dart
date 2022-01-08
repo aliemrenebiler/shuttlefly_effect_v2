@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../database/allmethods.dart';
+import '../database/allvariables.dart';
 import '../database/theme.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -97,6 +99,128 @@ class ExitBox extends StatelessWidget {
   }
 }
 
+// RESTART BOX
+class RestartBox extends StatelessWidget {
+  const RestartBox({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FittedBox(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.all(5),
+                height: 50,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'ARE YOU SURE?',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.fredokaOne(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      'Previous game will be deleted.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.fredokaOne(
+                        color: Color(sePinkyRed),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const NoButton2(),
+              const YesButton2(),
+            ],
+          ),
+          width: 200,
+          margin: const EdgeInsets.all(15),
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          width: seBorderWidth,
+          color: Color(seGrey),
+        ),
+      ),
+    );
+  }
+}
+
+// NO SAVED DATA BOX
+class NoDataBox extends StatelessWidget {
+  const NoDataBox({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FittedBox(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: Text(
+                        'NO DATA!',
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.fredokaOne(
+                          color: Colors.black,
+                          fontSize: 25,
+                        ),
+                      ),
+                      margin: const EdgeInsets.only(left: 10),
+                    ),
+                  ),
+                  const MenuCloseButton(),
+                ],
+              ),
+              Container(
+                alignment: Alignment.topCenter,
+                margin: const EdgeInsets.all(5),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Text(
+                    'There is no progress saved. You should start a new game.',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredokaOne(
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          width: 200,
+          margin: const EdgeInsets.all(15),
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          width: seBorderWidth,
+          color: Color(seGrey),
+        ),
+      ),
+    );
+  }
+}
+
 // BUTTONS
 class NewGameButton extends StatelessWidget {
   const NewGameButton({Key? key}) : super(key: key);
@@ -104,8 +228,23 @@ class NewGameButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, '/choosescreen');
+      onTap: () async {
+        if (await DatabaseService().dataExists) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const RestartBox(),
+                contentPadding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            },
+          );
+        } else {
+          Navigator.pushNamed(context, '/choosescreen');
+        }
       },
       child: Container(
         alignment: Alignment.center,
@@ -138,7 +277,31 @@ class ContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        if (await DatabaseService().dataExists) {
+          char1 = await DatabaseService().getCharFromLocal(1);
+          char2 = await DatabaseService().getCharFromLocal(2);
+          char3 = await DatabaseService().getCharFromLocal(3);
+
+          event.eventID = await DatabaseService().getEventIDFromLocal();
+          event = await DatabaseService().getEvent(event.eventID!);
+
+          Navigator.pushNamed(context, '/gamescreen');
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const NoDataBox(),
+                contentPadding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            },
+          );
+        }
+      },
       child: Container(
         alignment: Alignment.center,
         child: Text(
@@ -269,6 +432,111 @@ class NoButton extends StatelessWidget {
           border: Border.all(
             width: seBorderWidth,
             color: Color(seDarkGrey),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+      ),
+    );
+  }
+}
+
+class YesButton2 extends StatelessWidget {
+  const YesButton2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        await DatabaseService().eraseSavedData();
+        Navigator.popAndPushNamed(context, '/choosescreen');
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          'YES',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.fredokaOne(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+        height: seButtonHeight,
+        decoration: BoxDecoration(
+          color: Color(sePinkyRed),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seDarkPinkyRed),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+      ),
+    );
+  }
+}
+
+class NoButton2 extends StatelessWidget {
+  const NoButton2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          'NO',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.fredokaOne(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+        height: seButtonHeight,
+        decoration: BoxDecoration(
+          color: Color(seGrey),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seDarkGrey),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+      ),
+    );
+  }
+}
+
+class MenuCloseButton extends StatelessWidget {
+  const MenuCloseButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+        // SAVE GAME AND GO BACK TO MAIN MENU
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          'X',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.fredokaOne(
+            color: Color(seDarkPinkyRed),
+            fontSize: 30,
+          ),
+        ),
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          color: Color(seLightGrey),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seGrey),
           ),
         ),
         margin: const EdgeInsets.all(5),

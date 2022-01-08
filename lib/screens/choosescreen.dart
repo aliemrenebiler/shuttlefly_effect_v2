@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shutterfly_effect/database/allclasses.dart';
+import 'package:shutterfly_effect/database/allmethods.dart';
 import '../database/allvariables.dart';
 import '../database/theme.dart';
 
@@ -27,14 +29,10 @@ class ChooseScreen extends StatelessWidget {
                         Expanded(
                           child: CharacterBox(
                             index: 1,
-                            imgURL: char0.imgURL,
-                            charName: char0.charName,
                           ),
                         ),
                         SkillBox(
                           index: 1,
-                          skillName: char0.skillName,
-                          skillDesc: char0.skillDesc,
                         ),
                       ],
                     ),
@@ -46,14 +44,10 @@ class ChooseScreen extends StatelessWidget {
                         Expanded(
                           child: CharacterBox(
                             index: 2,
-                            imgURL: char1.imgURL,
-                            charName: char1.charName,
                           ),
                         ),
                         SkillBox(
                           index: 2,
-                          skillName: char1.skillName,
-                          skillDesc: char1.skillDesc,
                         ),
                       ],
                     ),
@@ -65,14 +59,10 @@ class ChooseScreen extends StatelessWidget {
                         Expanded(
                           child: CharacterBox(
                             index: 3,
-                            imgURL: char2.imgURL,
-                            charName: char2.charName,
                           ),
                         ),
                         SkillBox(
                           index: 3,
-                          skillName: char2.skillName,
-                          skillDesc: char2.skillDesc,
                         ),
                       ],
                     ),
@@ -89,183 +79,198 @@ class ChooseScreen extends StatelessWidget {
 
 // CHARACTER NAME AND PICTURE BOX
 class CharacterBox extends StatefulWidget {
-  int index;
-  String imgURL;
-  String charName;
-  CharacterBox(
-      {Key? key,
-      required this.index,
-      required this.imgURL,
-      required this.charName})
-      : super(key: key);
+  final int index;
+
+  CharacterBox({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
   @override
   _CharacterBoxState createState() => _CharacterBoxState();
 }
 
 class _CharacterBoxState extends State<CharacterBox> {
   var counter = 0;
-  var index;
   @override
   Widget build(BuildContext context) {
-    index = widget.index;
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              'CHARACTER $index',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.fredokaOne(
-                color: Color(seDarkPinkyRed),
-                fontSize: 20,
-              ),
-            ),
-            margin: const EdgeInsets.only(top: 10),
-          ),
-          Expanded(
-            flex: 1,
-            child: AspectRatio(
-              aspectRatio: 1.0,
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      widget.imgURL,
-                    ),
-                  ),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    width: seBorderWidth,
-                    color: Color(seDarkCream),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Row(
+    return FutureBuilder<Character>(
+      future: DatabaseService().getOnlyChar((widget.index - 1) * 5 + counter),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Container();
+        var char = snapshot.data!;
+        switch (widget.index) {
+          case 1:
+            char1.charID = char.charID;
+            char1.charName = char.charName;
+            char1.imgURL = char.imgURL;
+            break;
+          case 2:
+            char2.charID = char.charID;
+            char2.charName = char.charName;
+            char2.imgURL = char.imgURL;
+            break;
+          case 3:
+            char3.charID = char.charID;
+            char3.charName = char.charName;
+            char3.imgURL = char.imgURL;
+            break;
+        }
+        return Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    if (counter == 0) {
-                      counter = 4;
-                    } else {
-                      counter--;
-                    }
-
-                    // GEREKLİ İŞLEMLER <======
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '<',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.white,
-                        fontSize: 35,
-                      ),
-                    ),
-                    height: seTextBoxHeight,
-                    decoration: BoxDecoration(
-                      color: Color(sePinkyRed),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: seBorderWidth,
-                        color: Color(seDarkPinkyRed),
-                      ),
-                    ),
-                    margin: const EdgeInsets.all(5),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'CHARACTER ${widget.index}',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.fredokaOne(
+                    color: Color(seDarkPinkyRed),
+                    fontSize: 20,
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        '$counter',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.fredokaOne(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                      height: seTextBoxHeight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                          width: seBorderWidth,
-                          color: Color(seDarkCream),
-                        ),
-                      ),
-                      margin: const EdgeInsets.only(top: 5, bottom: 5),
-                    ),
-                  ],
-                ),
+                margin: const EdgeInsets.only(top: 10),
               ),
               Expanded(
                 flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    if (counter == 4) {
-                      counter = 0;
-                    } else {
-                      counter++;
-                    }
-
-                    // GEREKLİ İŞLEMLER <======
-
-                    setState(() {});
-                  },
+                child: AspectRatio(
+                  aspectRatio: 1.0,
                   child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '>',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.white,
-                        fontSize: 35,
-                      ),
-                    ),
-                    height: seTextBoxHeight,
+                    margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Color(sePinkyRed),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          char.imgURL!,
+                        ),
+                      ),
+                      shape: BoxShape.circle,
                       border: Border.all(
                         width: seBorderWidth,
-                        color: Color(seDarkPinkyRed),
+                        color: Color(seDarkCream),
                       ),
                     ),
-                    margin: const EdgeInsets.all(5),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () async {
+                        if (counter == 0) {
+                          counter = 4;
+                        } else {
+                          counter--;
+                        }
+                        setState(() {});
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '<',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredokaOne(
+                            color: Colors.white,
+                            fontSize: 35,
+                          ),
+                        ),
+                        height: seTextBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(sePinkyRed),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: seBorderWidth,
+                            color: Color(seDarkPinkyRed),
+                          ),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            char.charName!,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.fredokaOne(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                          ),
+                          height: seTextBoxHeight,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(
+                              width: seBorderWidth,
+                              color: Color(seDarkCream),
+                            ),
+                          ),
+                          margin: const EdgeInsets.only(top: 5, bottom: 5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        if (counter == 4) {
+                          counter = 0;
+                        } else {
+                          counter++;
+                        }
+                        setState(() {});
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '>',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredokaOne(
+                            color: Colors.white,
+                            fontSize: 35,
+                          ),
+                        ),
+                        height: seTextBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(sePinkyRed),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: seBorderWidth,
+                            color: Color(seDarkPinkyRed),
+                          ),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-      margin: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Color(seLightCream),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(
-          width: seBorderWidth,
-          color: Color(seCream),
-        ),
-      ),
+          margin: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Color(seLightCream),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(
+              width: seBorderWidth,
+              color: Color(seCream),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -273,172 +278,191 @@ class _CharacterBoxState extends State<CharacterBox> {
 // CHARACTER NAME AND PICTURE BOX
 class SkillBox extends StatefulWidget {
   final int index;
-  String skillName;
-  String skillDesc;
-  SkillBox(
-      {Key? key,
-      required this.index,
-      required this.skillName,
-      required this.skillDesc})
-      : super(key: key);
+  SkillBox({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
   @override
   _SkillBoxState createState() => _SkillBoxState();
 }
 
 class _SkillBoxState extends State<SkillBox> {
   var counter = 0;
-  var index;
   @override
   Widget build(BuildContext context) {
-    index = widget.index;
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              'SKILL OF $index',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.fredokaOne(
-                color: Color(seDarkBlue),
-                fontSize: 20,
-              ),
-            ),
-            margin: const EdgeInsets.only(top: 5),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return FutureBuilder<Character>(
+      future: DatabaseService().getOnlySkill(counter),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Container();
+        var char = snapshot.data!;
+        switch (widget.index) {
+          case 1:
+            char1.skillID = char.skillID;
+            char1.skillName = char.skillName;
+            char1.skillDesc = char.skillDesc;
+            break;
+          case 2:
+            char2.skillID = char.skillID;
+            char2.skillName = char.skillName;
+            char2.skillDesc = char.skillDesc;
+            break;
+          case 3:
+            char3.skillID = char.skillID;
+            char3.skillName = char.skillName;
+            char3.skillDesc = char.skillDesc;
+            break;
+          default:
+        }
+        return Container(
+          child: Column(
             children: [
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    if (counter == 0) {
-                      counter = 9;
-                    } else {
-                      counter--;
-                    }
-
-                    // GEREKLİ İŞLEMLER <======
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '<',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.white,
-                        fontSize: 35,
-                      ),
-                    ),
-                    height: seTextBoxHeight,
-                    decoration: BoxDecoration(
-                      color: Color(seLightBlue),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: seBorderWidth,
-                        color: Color(seBlue),
-                      ),
-                    ),
-                    margin: const EdgeInsets.all(5),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'SKILL OF ${widget.index}',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.fredokaOne(
+                    color: Color(seDarkBlue),
+                    fontSize: 20,
                   ),
                 ),
+                margin: const EdgeInsets.only(top: 5),
               ),
-              Expanded(
-                flex: 2,
-                child: InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: SkillDescBox(
-                            skillName: widget.skillName,
-                            skillDesc: widget.skillDesc,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        if (counter == 0) {
+                          counter = 9;
+                        } else {
+                          counter--;
+                        }
+                        setState(() {});
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '<',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredokaOne(
+                            color: Colors.white,
+                            fontSize: 35,
                           ),
-                          contentPadding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        ),
+                        height: seTextBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(seLightBlue),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: seBorderWidth,
+                            color: Color(seBlue),
                           ),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: SkillDescBox(
+                                skillName: char.skillName!,
+                                skillDesc: char.skillDesc!,
+                              ),
+                              contentPadding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      widget.skillName,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.black,
-                        fontSize: 20,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          char.skillName!,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredokaOne(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        height: seTextBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: seBorderWidth,
+                            color: Color(seDarkGrey),
+                          ),
+                        ),
+                        margin: const EdgeInsets.only(top: 5, bottom: 5),
                       ),
                     ),
-                    height: seTextBoxHeight,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: seBorderWidth,
-                        color: Color(seDarkGrey),
-                      ),
-                    ),
-                    margin: const EdgeInsets.only(top: 5, bottom: 5),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    if (counter == 9) {
-                      counter = 0;
-                    } else {
-                      counter++;
-                    }
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        if (counter == 9) {
+                          counter = 0;
+                        } else {
+                          counter++;
+                        }
 
-                    // GEREKLİ İŞLEMLER <======
+                        // GEREKLİ İŞLEMLER <======
 
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '>',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.white,
-                        fontSize: 35,
+                        setState(() {});
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '>',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredokaOne(
+                            color: Colors.white,
+                            fontSize: 35,
+                          ),
+                        ),
+                        height: seTextBoxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(seLightBlue),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: seBorderWidth,
+                            color: Color(seBlue),
+                          ),
+                        ),
+                        margin: const EdgeInsets.all(5),
                       ),
                     ),
-                    height: seTextBoxHeight,
-                    decoration: BoxDecoration(
-                      color: Color(seLightBlue),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: seBorderWidth,
-                        color: Color(seBlue),
-                      ),
-                    ),
-                    margin: const EdgeInsets.all(5),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-      margin: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Color(seLightGrey),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(
-          width: seBorderWidth,
-          color: Color(seGrey),
-        ),
-      ),
+          margin: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Color(seLightGrey),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(
+              width: seBorderWidth,
+              color: Color(seGrey),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -519,6 +543,7 @@ class SkillDescBox extends StatelessWidget {
                 margin: const EdgeInsets.all(5),
                 height: MediaQuery.of(context).size.height / 3,
                 child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
                   child: Text(
                     skillDesc,
                     textAlign: TextAlign.center,
@@ -556,7 +581,6 @@ class BackButton extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
-        // DELETE ALL THE PROGRESS
       },
       child: Container(
         alignment: Alignment.center,
@@ -581,9 +605,27 @@ class DoneButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, '/gamescreen');
-        // DELETE ALL THE PROGRESS
+      onTap: () async {
+        char1.health = 100;
+        char1.oxygen = 100;
+        char1.psycho = 100;
+        char1.energy = 100;
+
+        char2.health = 100;
+        char2.oxygen = 100;
+        char2.psycho = 100;
+        char2.energy = 100;
+
+        char3.health = 100;
+        char3.oxygen = 100;
+        char3.psycho = 100;
+        char3.energy = 100;
+
+        eventPageIndex = 0;
+        await DatabaseService().saveCharacters();
+        event = await DatabaseService().getRandomEvent();
+        await DatabaseService().saveEventID();
+        Navigator.popAndPushNamed(context, '/gamescreen');
       },
       child: Container(
         alignment: Alignment.center,

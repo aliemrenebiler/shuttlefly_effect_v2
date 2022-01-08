@@ -1,5 +1,9 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shutterfly_effect/database/allmethods.dart';
+import '../database/allclasses.dart';
 import '../database/allvariables.dart';
 import '../database/theme.dart';
 
@@ -15,9 +19,9 @@ class GameScreen extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-                flex: 1,
-                child:
-                    EventBox(eventTitle: event.title, eventDesc: event.desc)),
+              flex: 1,
+              child: EventBox(),
+            ),
             Expanded(
               flex: 1,
               child: Column(
@@ -25,32 +29,23 @@ class GameScreen extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char0.charName,
-                        imgURL: char0.imgURL,
-                        h: char0.health,
-                        o: char0.oxygen,
-                        p: char0.psycho,
-                        e: char0.energy),
+                      index: 1,
+                      char: char1,
+                    ),
                   ),
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char1.charName,
-                        imgURL: char1.imgURL,
-                        h: char1.health,
-                        o: char1.oxygen,
-                        p: char1.psycho,
-                        e: char1.energy),
+                      index: 2,
+                      char: char2,
+                    ),
                   ),
                   Expanded(
                     flex: 5,
                     child: CharStateBox(
-                        charName: char2.charName,
-                        imgURL: char2.imgURL,
-                        h: char2.health,
-                        o: char2.oxygen,
-                        p: char2.psycho,
-                        e: char2.energy),
+                      index: 3,
+                      char: char3,
+                    ),
                   ),
                   Expanded(
                     flex: 3,
@@ -79,13 +74,7 @@ class GameScreen extends StatelessWidget {
 
 // EVENT BOX
 class EventBox extends StatefulWidget {
-  String eventTitle; // event title
-  String eventDesc; // event description
-  EventBox({
-    Key? key,
-    required this.eventTitle,
-    required this.eventDesc,
-  }) : super(key: key);
+  EventBox({Key? key}) : super(key: key);
 
   @override
   State<EventBox> createState() => _EventBoxState();
@@ -97,23 +86,25 @@ class _EventBoxState extends State<EventBox> {
     return Container(
       child: Column(
         children: [
-          Container(
-            child: Text(
-              widget.eventTitle,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.fredokaOne(
-                color: Color(seDarkBlue),
-                fontSize: 25,
-              ),
-            ),
-            margin: const EdgeInsets.fromLTRB(15, 20, 15, 10),
-          ),
+          eventPageIndex != 1
+              ? Container(
+                  child: Text(
+                    event.title!,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredokaOne(
+                      color: Color(seDarkBlue),
+                      fontSize: 25,
+                    ),
+                  ),
+                  margin: const EdgeInsets.fromLTRB(15, 20, 15, 10),
+                )
+              : Container(),
           Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Container(
                 child: Text(
-                  widget.eventDesc,
+                  eventPageIndex != 1 ? event.desc! : selection.desc!,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.fade,
                   style: GoogleFonts.fredokaOne(
@@ -125,6 +116,7 @@ class _EventBoxState extends State<EventBox> {
               ),
             ),
           ),
+          eventPageIndex == 1 ? const DoneButton() : Container()
         ],
       ),
       decoration: BoxDecoration(
@@ -141,118 +133,248 @@ class _EventBoxState extends State<EventBox> {
 }
 
 // CHARACTER STATE BOX
-class CharStateBox extends StatelessWidget {
-  final String charName;
-  final String imgURL;
-  int h; // health
-  int o; // oxygen
-  int p; // psychology
-  int e; // energy
+class CharStateBox extends StatefulWidget {
+  final int index;
+  Character char;
 
   CharStateBox({
     Key? key,
-    required this.imgURL,
-    required this.charName,
-    required this.h,
-    required this.o,
-    required this.p,
-    required this.e,
+    required this.index,
+    required this.char,
   }) : super(key: key);
+
+  @override
+  State<CharStateBox> createState() => _CharStateBoxState();
+}
+
+class _CharStateBoxState extends State<CharStateBox> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: Container(
-              margin: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    imgURL,
+    return InkWell(
+      onTap: () async {
+        selection = await DatabaseService().getSelection(widget.char.skillID!);
+        switch (widget.index) {
+          case 1:
+            manageStates(char1, char2, char3);
+            break;
+          case 2:
+            manageStates(char2, char1, char3);
+            break;
+          case 3:
+            manageStates(char3, char1, char2);
+            break;
+        }
+        eventPageIndex = 1;
+        DatabaseService().saveStates();
+        // SET STATE FULL PAGE <==========================
+      },
+      child: Container(
+        child: Row(
+          children: [
+            AspectRatio(
+              aspectRatio: 1.0,
+              child: Container(
+                margin: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      widget.char.imgURL!,
+                    ),
                   ),
-                ),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: seBorderWidth,
-                  color: Color(seDarkCream),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: seBorderWidth,
+                    color: Color(seDarkCream),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    charName,
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.fredokaOne(
-                      color: Colors.black,
-                      fontSize: 18,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.char.charName!,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.fredokaOne(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    margin: const EdgeInsets.all(3),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Health',
+                            color: sePinkyRed,
+                            dColor: seDarkPinkyRed,
+                            value: widget.char.health!,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Oxygen',
+                            color: seLightBlue,
+                            dColor: seBlue,
+                            value: widget.char.oxygen!,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Moral',
+                            color: sePurple,
+                            dColor: seDarkPurple,
+                            value: widget.char.psycho!,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Energy',
+                            color: seYellow,
+                            dColor: seDarkYellow,
+                            value: widget.char.energy!,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  margin: const EdgeInsets.all(3),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: StateValueBox(
-                          text: 'Health',
-                          color: sePinkyRed,
-                          dColor: seDarkPinkyRed,
-                          value: h,
-                        ),
-                      ),
-                      Expanded(
-                        child: StateValueBox(
-                          text: 'Oxygen',
-                          color: seLightBlue,
-                          dColor: seBlue,
-                          value: o,
-                        ),
-                      ),
-                      Expanded(
-                        child: StateValueBox(
-                          text: 'Moral',
-                          color: sePurple,
-                          dColor: seDarkPurple,
-                          value: p,
-                        ),
-                      ),
-                      Expanded(
-                        child: StateValueBox(
-                          text: 'Energy',
-                          color: seYellow,
-                          dColor: seDarkYellow,
-                          value: e,
-                        ),
-                      ),
-                    ],
+                ],
+              ),
+            ),
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: Color(seLightCream),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seCream),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(2),
+      ),
+    );
+
+    /*
+    InkWell(
+      onTap: () async {
+        selection = await DatabaseService().getSelection(widget.skillID);
+        switch (widget.index) {
+          case 1:
+            manageStates(char1, char2, char3);
+            break;
+          case 2:
+            manageStates(char2, char1, char3);
+            break;
+          case 3:
+            manageStates(char3, char1, char2);
+            break;
+        }
+        setState(() {});
+      },
+      child: Container(
+        child: Row(
+          children: [
+            AspectRatio(
+              aspectRatio: 1.0,
+              child: Container(
+                margin: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      widget.imgURL,
+                    ),
+                  ),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: seBorderWidth,
+                    color: Color(seDarkCream),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: Color(seLightCream),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(
-          width: seBorderWidth,
-          color: Color(seCream),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.charName,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.fredokaOne(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    margin: const EdgeInsets.all(3),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Health',
+                            color: sePinkyRed,
+                            dColor: seDarkPinkyRed,
+                            value: widget.h,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Oxygen',
+                            color: seLightBlue,
+                            dColor: seBlue,
+                            value: widget.o,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Moral',
+                            color: sePurple,
+                            dColor: seDarkPurple,
+                            value: widget.p,
+                          ),
+                        ),
+                        Expanded(
+                          child: StateValueBox(
+                            text: 'Energy',
+                            color: seYellow,
+                            dColor: seDarkYellow,
+                            value: widget.e,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+        decoration: BoxDecoration(
+          color: Color(seLightCream),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seCream),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(2),
       ),
-      margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.all(2),
     );
+    */
   }
 }
 
@@ -275,16 +397,14 @@ class StateValueBox extends StatefulWidget {
 }
 
 class _StateValueBoxState extends State<StateValueBox> {
-  var value;
   @override
   Widget build(BuildContext context) {
-    value = widget.value;
     return Container(
       alignment: Alignment.center,
       child: Column(
         children: [
           Text(
-            '$value',
+            '${widget.value}',
             textAlign: TextAlign.center,
             style: GoogleFonts.fredokaOne(
               color: Colors.white,
@@ -310,6 +430,64 @@ class _StateValueBoxState extends State<StateValueBox> {
         ),
       ),
       margin: const EdgeInsets.all(3),
+    );
+  }
+}
+
+// NO SAVED DATA BOX
+class EndGameBox extends StatelessWidget {
+  final String message;
+  const EndGameBox({Key? key, required this.message}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FittedBox(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Text(
+                  'THE END',
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.fredokaOne(
+                    color: Colors.black,
+                    fontSize: 25,
+                  ),
+                ),
+                margin: const EdgeInsets.only(left: 10),
+              ),
+              Container(
+                alignment: Alignment.topCenter,
+                margin: const EdgeInsets.all(5),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredokaOne(
+                      color: Colors.black,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+              const MainMenuButton(),
+            ],
+          ),
+          width: 200,
+          margin: const EdgeInsets.all(15),
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          width: seBorderWidth,
+          color: Color(seGrey),
+        ),
+      ),
     );
   }
 }
@@ -381,6 +559,7 @@ class RestartBox extends StatelessWidget {
                 margin: const EdgeInsets.all(5),
                 height: 50,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'ARE YOU SURE?',
@@ -472,7 +651,13 @@ class SkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        selection = await DatabaseService().getSelection(10);
+        skipManageStates();
+        eventPageIndex = 1;
+        DatabaseService().saveStates();
+        // SET STATE FULL PAGE <==========================
+      },
       child: Container(
         alignment: Alignment.center,
         child: Row(
@@ -493,6 +678,63 @@ class SkipButton extends StatelessWidget {
           border: Border.all(
             width: seBorderWidth,
             color: Color(seDarkPinkyRed),
+          ),
+        ),
+        margin: const EdgeInsets.all(5),
+      ),
+    );
+  }
+}
+
+class DoneButton extends StatelessWidget {
+  const DoneButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        var message = checkStates();
+        if (message == '') {
+          eventPageIndex = 0;
+          event = await DatabaseService().getRandomEvent();
+          await DatabaseService().saveEventID();
+          // SET STATE FULL PAGE <==========================
+        } else {
+          await DatabaseService().eraseSavedData();
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: EndGameBox(
+                  message: message,
+                ),
+                contentPadding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            },
+          );
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          'DONE',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.fredokaOne(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+        height: seButtonHeight,
+        decoration: BoxDecoration(
+          color: Color(seLightBlue),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: seBorderWidth,
+            color: Color(seBlue),
           ),
         ),
         margin: const EdgeInsets.all(5),
@@ -544,10 +786,7 @@ class MainMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        // SAVE GAME AND GO BACK TO MAIN MENU
+        Navigator.popUntil(context, (route) => route.isFirst);
       },
       child: Container(
         alignment: Alignment.center,
@@ -626,9 +865,10 @@ class YesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
+      onTap: () async {
+        await DatabaseService().eraseSavedData();
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushNamed(context, '/choosescreen');
         // DELETE ALL THE PROGRESS
       },
       child: Container(
