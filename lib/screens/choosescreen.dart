@@ -96,7 +96,19 @@ class _CharacterBoxState extends State<CharacterBox> {
     return FutureBuilder<Character>(
       future: DatabaseService().getOnlyChar((widget.index - 1) * 5 + counter),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              'Loading...',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.fredokaOne(
+                color: Colors.white,
+                fontSize: 30,
+              ),
+            ),
+          );
+        }
         var char = snapshot.data!;
         switch (widget.index) {
           case 1:
@@ -605,20 +617,20 @@ class DoneButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        char1.health = 50;
-        char1.oxygen = 50;
-        char1.psycho = 50;
-        char1.energy = 50;
+        char1.health = defaultStateValue;
+        char1.oxygen = defaultStateValue;
+        char1.psycho = defaultStateValue;
+        char1.energy = defaultStateValue;
 
-        char2.health = 50;
-        char2.oxygen = 50;
-        char2.psycho = 50;
-        char2.energy = 50;
+        char2.health = defaultStateValue;
+        char2.oxygen = defaultStateValue;
+        char2.psycho = defaultStateValue;
+        char2.energy = defaultStateValue;
 
-        char3.health = 50;
-        char3.oxygen = 50;
-        char3.psycho = 50;
-        char3.energy = 50;
+        char3.health = defaultStateValue;
+        char3.oxygen = defaultStateValue;
+        char3.psycho = defaultStateValue;
+        char3.energy = defaultStateValue;
 
         eventPageIndex = 0;
         await DatabaseService().saveCharacters();

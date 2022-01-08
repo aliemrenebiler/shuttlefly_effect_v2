@@ -172,12 +172,12 @@ class DatabaseService {
 void manageStates(Character char1, Character char2, Character char3) {
   if (event.chosenH!) {
     if (selection.success!) {
-      char1.health = char1.health! + 10;
-      if (char1.health! > 100) {
-        char1.health = 100;
+      char1.health = char1.health! + currentCharState;
+      if (char1.health! > maxtStateValue) {
+        char1.health = maxtStateValue;
       }
     } else {
-      char1.health = char1.health! - 10;
+      char1.health = char1.health! - currentCharState;
       if (char1.health! < 0) {
         char1.health = 0;
       }
@@ -186,12 +186,12 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.chosenO!) {
     if (selection.success!) {
-      char1.oxygen = char1.oxygen! + 10;
-      if (char1.oxygen! > 100) {
-        char1.oxygen = 100;
+      char1.oxygen = char1.oxygen! + currentCharState;
+      if (char1.oxygen! > maxtStateValue) {
+        char1.oxygen = maxtStateValue;
       }
     } else {
-      char1.oxygen = char1.oxygen! - 10;
+      char1.oxygen = char1.oxygen! - currentCharState;
       if (char1.oxygen! < 0) {
         char1.oxygen = 0;
       }
@@ -200,12 +200,12 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.chosenP!) {
     if (selection.success!) {
-      char1.psycho = char1.psycho! + 10;
-      if (char1.psycho! > 100) {
-        char1.psycho = 100;
+      char1.psycho = char1.psycho! + currentCharState;
+      if (char1.psycho! > maxtStateValue) {
+        char1.psycho = maxtStateValue;
       }
     } else {
-      char1.psycho = char1.psycho! - 10;
+      char1.psycho = char1.psycho! - currentCharState;
       if (char1.psycho! < 0) {
         char1.psycho = 0;
       }
@@ -214,12 +214,12 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.chosenE!) {
     if (selection.success!) {
-      char1.energy = char1.energy! + 10;
-      if (char1.energy! > 100) {
-        char1.energy = 100;
+      char1.energy = char1.energy! + currentCharState;
+      if (char1.energy! > maxtStateValue) {
+        char1.energy = maxtStateValue;
       }
     } else {
-      char1.energy = char1.energy! - 10;
+      char1.energy = char1.energy! - currentCharState;
       if (char1.energy! < 0) {
         char1.energy = 0;
       }
@@ -228,17 +228,17 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.otherH!) {
     if (selection.success!) {
-      char2.health = char2.health! + 5;
-      char3.health = char3.health! + 5;
-      if (char2.health! > 100) {
-        char2.health = 100;
+      char2.health = char2.health! + otherCharState;
+      char3.health = char3.health! + otherCharState;
+      if (char2.health! > maxtStateValue) {
+        char2.health = maxtStateValue;
       }
-      if (char3.health! > 100) {
-        char3.health = 100;
+      if (char3.health! > maxtStateValue) {
+        char3.health = maxtStateValue;
       }
     } else {
-      char2.health = char2.health! - 5;
-      char3.health = char3.health! - 5;
+      char2.health = char2.health! - otherCharState;
+      char3.health = char3.health! - otherCharState;
       if (char2.health! < 0) {
         char2.health = 0;
       }
@@ -250,17 +250,17 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.otherO!) {
     if (selection.success!) {
-      char2.oxygen = char2.oxygen! + 5;
-      char3.oxygen = char3.oxygen! + 5;
-      if (char2.oxygen! > 100) {
-        char2.oxygen = 100;
+      char2.oxygen = char2.oxygen! + otherCharState;
+      char3.oxygen = char3.oxygen! + otherCharState;
+      if (char2.oxygen! > maxtStateValue) {
+        char2.oxygen = maxtStateValue;
       }
-      if (char3.oxygen! > 100) {
-        char3.oxygen = 100;
+      if (char3.oxygen! > maxtStateValue) {
+        char3.oxygen = maxtStateValue;
       }
     } else {
-      char2.oxygen = char2.oxygen! - 5;
-      char3.oxygen = char3.oxygen! - 5;
+      char2.oxygen = char2.oxygen! - otherCharState;
+      char3.oxygen = char3.oxygen! - otherCharState;
       if (char2.oxygen! < 0) {
         char2.oxygen = 0;
       }
@@ -272,17 +272,17 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.otherP!) {
     if (selection.success!) {
-      char2.psycho = char2.psycho! + 5;
-      char3.psycho = char3.psycho! + 5;
-      if (char2.psycho! > 100) {
-        char2.psycho = 100;
+      char2.psycho = char2.psycho! + otherCharState;
+      char3.psycho = char3.psycho! + otherCharState;
+      if (char2.psycho! > maxtStateValue) {
+        char2.psycho = maxtStateValue;
       }
-      if (char3.psycho! > 100) {
-        char3.psycho = 100;
+      if (char3.psycho! > maxtStateValue) {
+        char3.psycho = maxtStateValue;
       }
     } else {
-      char2.psycho = char2.psycho! - 5;
-      char3.psycho = char3.psycho! - 5;
+      char2.psycho = char2.psycho! - otherCharState;
+      char3.psycho = char3.psycho! - otherCharState;
       if (char2.psycho! < 0) {
         char2.psycho = 0;
       }
@@ -294,17 +294,17 @@ void manageStates(Character char1, Character char2, Character char3) {
 
   if (event.otherE!) {
     if (selection.success!) {
-      char2.energy = char2.energy! + 5;
-      char3.energy = char3.energy! + 5;
-      if (char2.energy! > 100) {
-        char2.energy = 100;
+      char2.energy = char2.energy! + otherCharState;
+      char3.energy = char3.energy! + otherCharState;
+      if (char2.energy! > maxtStateValue) {
+        char2.energy = maxtStateValue;
       }
-      if (char3.energy! > 100) {
-        char3.energy = 100;
+      if (char3.energy! > maxtStateValue) {
+        char3.energy = maxtStateValue;
       }
     } else {
-      char2.energy = char2.energy! - 5;
-      char3.energy = char3.energy! - 5;
+      char2.energy = char2.energy! - otherCharState;
+      char3.energy = char3.energy! - otherCharState;
       if (char2.energy! < 0) {
         char2.energy = 0;
       }
