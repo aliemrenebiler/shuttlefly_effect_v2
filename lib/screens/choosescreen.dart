@@ -539,24 +539,23 @@ class SkillDescBox extends StatelessWidget {
                 ],
               ),
               Container(
-                alignment: Alignment.topCenter,
+                alignment: Alignment.center,
                 margin: const EdgeInsets.all(5),
-                height: MediaQuery.of(context).size.height / 3,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Text(
                     skillDesc,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     style: GoogleFonts.fredokaOne(
                       color: Colors.black,
-                      fontSize: 13,
+                      fontSize: 15,
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          width: 200,
+          width: 300,
           margin: const EdgeInsets.all(15),
         ),
       ),
@@ -606,20 +605,20 @@ class DoneButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        char1.health = 100;
-        char1.oxygen = 100;
-        char1.psycho = 100;
-        char1.energy = 100;
+        char1.health = 50;
+        char1.oxygen = 50;
+        char1.psycho = 50;
+        char1.energy = 50;
 
-        char2.health = 100;
-        char2.oxygen = 100;
-        char2.psycho = 100;
-        char2.energy = 100;
+        char2.health = 50;
+        char2.oxygen = 50;
+        char2.psycho = 50;
+        char2.energy = 50;
 
-        char3.health = 100;
-        char3.oxygen = 100;
-        char3.psycho = 100;
-        char3.energy = 100;
+        char3.health = 50;
+        char3.oxygen = 50;
+        char3.psycho = 50;
+        char3.energy = 50;
 
         eventPageIndex = 0;
         await DatabaseService().saveCharacters();

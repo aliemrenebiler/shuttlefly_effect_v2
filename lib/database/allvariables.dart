@@ -1,6 +1,6 @@
 import 'allclasses.dart';
 
-var eventPageIndex;
+var eventPageIndex = 0;
 
 var event = Event();
 var selection = Selection();

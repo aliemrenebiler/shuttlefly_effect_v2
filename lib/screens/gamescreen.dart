@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shutterfly_effect/database/allmethods.dart';
@@ -7,8 +5,16 @@ import '../database/allclasses.dart';
 import '../database/allvariables.dart';
 import '../database/theme.dart';
 
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  refresh() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,9 @@ class GameScreen extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: EventBox(),
+              child: EventBox(
+                notifyParent: refresh,
+              ),
             ),
             Expanded(
               flex: 1,
@@ -31,6 +39,7 @@ class GameScreen extends StatelessWidget {
                     child: CharStateBox(
                       index: 1,
                       char: char1,
+                      notifyParent: refresh,
                     ),
                   ),
                   Expanded(
@@ -38,6 +47,7 @@ class GameScreen extends StatelessWidget {
                     child: CharStateBox(
                       index: 2,
                       char: char2,
+                      notifyParent: refresh,
                     ),
                   ),
                   Expanded(
@@ -45,20 +55,30 @@ class GameScreen extends StatelessWidget {
                     child: CharStateBox(
                       index: 3,
                       char: char3,
+                      notifyParent: refresh,
                     ),
                   ),
                   Expanded(
                     flex: 3,
                     child: Row(
-                      children: const [
-                        Expanded(
+                      children: [
+                        const Expanded(
                           flex: 1,
                           child: MenuButton(),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: SkipButton(),
-                        ),
+                        eventPageIndex != 1
+                            ? Expanded(
+                                flex: 2,
+                                child: SkipButton(
+                                  notifyParent: refresh,
+                                ),
+                              )
+                            : Expanded(
+                                flex: 2,
+                                child: DoneButton(
+                                  notifyParent: refresh,
+                                ),
+                              ),
                       ],
                     ),
                   ),
@@ -74,7 +94,8 @@ class GameScreen extends StatelessWidget {
 
 // EVENT BOX
 class EventBox extends StatefulWidget {
-  EventBox({Key? key}) : super(key: key);
+  final Function() notifyParent;
+  const EventBox({Key? key, required this.notifyParent}) : super(key: key);
 
   @override
   State<EventBox> createState() => _EventBoxState();
@@ -83,6 +104,7 @@ class EventBox extends StatefulWidget {
 class _EventBoxState extends State<EventBox> {
   @override
   Widget build(BuildContext context) {
+    widget.notifyParent;
     return Container(
       child: Column(
         children: [
@@ -98,7 +120,17 @@ class _EventBoxState extends State<EventBox> {
                   ),
                   margin: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                 )
-              : Container(),
+              : Container(
+                  child: Text(
+                    'WHAT HAPPENED?',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredokaOne(
+                      color: Color(seDarkPinkyRed),
+                      fontSize: 25,
+                    ),
+                  ),
+                  margin: const EdgeInsets.fromLTRB(15, 20, 15, 10),
+                ),
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -116,7 +148,6 @@ class _EventBoxState extends State<EventBox> {
               ),
             ),
           ),
-          eventPageIndex == 1 ? const DoneButton() : Container()
         ],
       ),
       decoration: BoxDecoration(
@@ -136,11 +167,13 @@ class _EventBoxState extends State<EventBox> {
 class CharStateBox extends StatefulWidget {
   final int index;
   Character char;
+  final Function() notifyParent;
 
   CharStateBox({
     Key? key,
     required this.index,
     required this.char,
+    required this.notifyParent,
   }) : super(key: key);
 
   @override
@@ -152,21 +185,25 @@ class _CharStateBoxState extends State<CharStateBox> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        selection = await DatabaseService().getSelection(widget.char.skillID!);
-        switch (widget.index) {
-          case 1:
-            manageStates(char1, char2, char3);
-            break;
-          case 2:
-            manageStates(char2, char1, char3);
-            break;
-          case 3:
-            manageStates(char3, char1, char2);
-            break;
+        if (eventPageIndex != 1) {
+          selection =
+              await DatabaseService().getSelection(widget.char.skillID!);
+          switch (widget.index) {
+            case 1:
+              manageStates(char1, char2, char3);
+              break;
+            case 2:
+              manageStates(char2, char1, char3);
+              break;
+            case 3:
+              manageStates(char3, char1, char2);
+              break;
+          }
+          eventPageIndex = 1;
+          DatabaseService().saveStates();
+          // SET STATE FULL PAGE
+          widget.notifyParent();
         }
-        eventPageIndex = 1;
-        DatabaseService().saveStates();
-        // SET STATE FULL PAGE <==========================
       },
       child: Container(
         child: Row(
@@ -262,119 +299,6 @@ class _CharStateBoxState extends State<CharStateBox> {
         padding: const EdgeInsets.all(2),
       ),
     );
-
-    /*
-    InkWell(
-      onTap: () async {
-        selection = await DatabaseService().getSelection(widget.skillID);
-        switch (widget.index) {
-          case 1:
-            manageStates(char1, char2, char3);
-            break;
-          case 2:
-            manageStates(char2, char1, char3);
-            break;
-          case 3:
-            manageStates(char3, char1, char2);
-            break;
-        }
-        setState(() {});
-      },
-      child: Container(
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 1.0,
-              child: Container(
-                margin: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      widget.imgURL,
-                    ),
-                  ),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    width: seBorderWidth,
-                    color: Color(seDarkCream),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.charName,
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.fredokaOne(
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                    ),
-                    margin: const EdgeInsets.all(3),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: StateValueBox(
-                            text: 'Health',
-                            color: sePinkyRed,
-                            dColor: seDarkPinkyRed,
-                            value: widget.h,
-                          ),
-                        ),
-                        Expanded(
-                          child: StateValueBox(
-                            text: 'Oxygen',
-                            color: seLightBlue,
-                            dColor: seBlue,
-                            value: widget.o,
-                          ),
-                        ),
-                        Expanded(
-                          child: StateValueBox(
-                            text: 'Moral',
-                            color: sePurple,
-                            dColor: seDarkPurple,
-                            value: widget.p,
-                          ),
-                        ),
-                        Expanded(
-                          child: StateValueBox(
-                            text: 'Energy',
-                            color: seYellow,
-                            dColor: seDarkYellow,
-                            value: widget.e,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        decoration: BoxDecoration(
-          color: Color(seLightCream),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-            width: seBorderWidth,
-            color: Color(seCream),
-          ),
-        ),
-        margin: const EdgeInsets.all(5),
-        padding: const EdgeInsets.all(2),
-      ),
-    );
-    */
   }
 }
 
@@ -456,7 +380,7 @@ class EndGameBox extends StatelessWidget {
                     fontSize: 25,
                   ),
                 ),
-                margin: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.all(5),
               ),
               Container(
                 alignment: Alignment.topCenter,
@@ -646,7 +570,8 @@ class MenuButton extends StatelessWidget {
 }
 
 class SkipButton extends StatelessWidget {
-  const SkipButton({Key? key}) : super(key: key);
+  final Function() notifyParent;
+  const SkipButton({Key? key, required this.notifyParent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -656,7 +581,8 @@ class SkipButton extends StatelessWidget {
         skipManageStates();
         eventPageIndex = 1;
         DatabaseService().saveStates();
-        // SET STATE FULL PAGE <==========================
+        // SET STATE FULL PAGE
+        notifyParent();
       },
       child: Container(
         alignment: Alignment.center,
@@ -687,7 +613,8 @@ class SkipButton extends StatelessWidget {
 }
 
 class DoneButton extends StatelessWidget {
-  const DoneButton({Key? key}) : super(key: key);
+  final Function() notifyParent;
+  const DoneButton({Key? key, required this.notifyParent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -698,7 +625,8 @@ class DoneButton extends StatelessWidget {
           eventPageIndex = 0;
           event = await DatabaseService().getRandomEvent();
           await DatabaseService().saveEventID();
-          // SET STATE FULL PAGE <==========================
+          // SET STATE FULL PAGE
+          notifyParent();
         } else {
           await DatabaseService().eraseSavedData();
           showDialog(
@@ -724,17 +652,17 @@ class DoneButton extends StatelessWidget {
           'DONE',
           textAlign: TextAlign.center,
           style: GoogleFonts.fredokaOne(
-            color: Colors.white,
-            fontSize: 20,
+            color: Color(seDarkPinkyRed),
+            fontSize: 30,
           ),
         ),
         height: seButtonHeight,
         decoration: BoxDecoration(
-          color: Color(seLightBlue),
+          color: Color(seLightGrey),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.all(
             width: seBorderWidth,
-            color: Color(seBlue),
+            color: Color(seGrey),
           ),
         ),
         margin: const EdgeInsets.all(5),

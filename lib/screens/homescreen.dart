@@ -114,7 +114,6 @@ class RestartBox extends StatelessWidget {
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.all(5),
-                height: 50,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -127,11 +126,11 @@ class RestartBox extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Previous game will be deleted.',
+                      'Your previous progress\nwill be deleted.',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.fredokaOne(
                         color: Color(sePinkyRed),
-                        fontSize: 12,
+                        fontSize: 15,
                       ),
                     ),
                   ],
