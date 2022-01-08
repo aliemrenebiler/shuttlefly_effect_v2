@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shutterfly_effect/database/allclasses.dart';
-import 'package:shutterfly_effect/database/allmethods.dart';
+import '../database/allclasses.dart';
+import '../database/allmethods.dart';
 import '../database/allvariables.dart';
 import '../database/theme.dart';
 
@@ -17,7 +17,7 @@ class ChooseScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TopBarBox(),
+            const TopBarBox(),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

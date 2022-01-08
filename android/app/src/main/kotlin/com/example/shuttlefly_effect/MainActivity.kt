@@ -1,4 +1,4 @@
-package com.example.shutterfly_effect
+package com.example.shuttlefly_effect
 
 import io.flutter.embedding.android.FlutterActivity
 
