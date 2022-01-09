@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>894101027782-bq01pf8bg3q2vppp78ivmjs0tr7fsnsf.apps.googleusercontent.com</string>
+	<string>894101027782-8c3jif5986uufpdg47n03rugnn2b0bu4.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.894101027782-bq01pf8bg3q2vppp78ivmjs0tr7fsnsf</string>
+	<string>com.googleusercontent.apps.894101027782-8c3jif5986uufpdg47n03rugnn2b0bu4</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDvJM49WOdZpv2dycBunKnMsW7p-LKkgBc</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.shuttleflyEffect</string>
+	<string>com.example.shuttleflyEffectV2</string>
 	<key>PROJECT_ID</key>
 	<string>ytu-ce-araproje</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:894101027782:ios:0dce3f02c0af145b0a10c7</string>
+	<string>1:894101027782:ios:d21412d84aa575210a10c7</string>
 </dict>
 </plist>

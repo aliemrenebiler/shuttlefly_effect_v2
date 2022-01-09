@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:894101027782:android:2df3ecde7943bb570a10c7",
+        "mobilesdk_app_id": "1:894101027782:android:0e719749c8999c9d0a10c7",
         "android_client_info": {
-          "package_name": "com.example.shuttlefly_effect"
+          "package_name": "com.example.shuttlefly_effect_v2"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "894101027782-9oc5pmih08qvre4l8etfnnfc0a5e2kf9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "894101027782-bq01pf8bg3q2vppp78ivmjs0tr7fsnsf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shuttleflyEffect"
+              }
             }
           ]
         }

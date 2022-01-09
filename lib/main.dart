@@ -32,6 +32,11 @@ class MyApp extends StatelessWidget {
         '/choosescreen': (context) => const ChooseScreen(),
         '/gamescreen': (context) => const GameScreen(),
       },
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
+      ),
     );
   }
 }

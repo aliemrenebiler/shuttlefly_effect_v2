@@ -1,6 +1,6 @@
 {
-    "name": "shuttlefly_effect",
-    "short_name": "shuttlefly_effect",
+    "name": "shuttlefly_effect_v2",
+    "short_name": "shuttlefly_effect_v2",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

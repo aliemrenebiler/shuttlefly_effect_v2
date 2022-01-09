@@ -23,13 +23,13 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="shuttlefly_effect">
+  <meta name="apple-mobile-web-app-title" content="shuttlefly_effect_v2">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>shuttlefly_effect</title>
+  <title>shuttlefly_effect_v2</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -100,22 +100,28 @@
       loadMainDartJs();
     }
   </script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
   <script>
+    // Import the functions you need from the SDKs you need
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDB859DO9HwDpOKvUHeYRDEzIxsfYEOC_I",
       authDomain: "ytu-ce-araproje.firebaseapp.com",
       projectId: "ytu-ce-araproje",
       storageBucket: "ytu-ce-araproje.appspot.com",
       messagingSenderId: "894101027782",
-      appId: "1:894101027782:web:739999101905961f0a10c7"
+      appId: "1:894101027782:web:3444dbc04f67fac60a10c7"
     };
-  
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
   </script>
 </body>
 </html>
