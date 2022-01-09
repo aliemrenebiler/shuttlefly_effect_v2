@@ -234,7 +234,10 @@ class _CharStateBoxState extends State<CharStateBox> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      widget.char.charName!,
+                      widget.char.charName! +
+                          ' (' +
+                          widget.char.skillName! +
+                          ')',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.fredokaOne(
                         color: Colors.black,
@@ -679,7 +682,6 @@ class MenuCloseButton extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
-        // SAVE GAME AND GO BACK TO MAIN MENU
       },
       child: Container(
         alignment: Alignment.center,

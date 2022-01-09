@@ -242,7 +242,7 @@ class NewGameButton extends StatelessWidget {
             },
           );
         } else {
-          Navigator.pushNamed(context, '/choosescreen');
+          Navigator.pushNamed(context, '/storyscreen');
         }
       },
       child: Container(
@@ -447,7 +447,7 @@ class YesButton2 extends StatelessWidget {
     return InkWell(
       onTap: () async {
         await DatabaseService().eraseSavedData();
-        Navigator.popAndPushNamed(context, '/choosescreen');
+        Navigator.popAndPushNamed(context, '/storyscreen');
       },
       child: Container(
         alignment: Alignment.center,

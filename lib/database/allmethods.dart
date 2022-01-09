@@ -482,6 +482,6 @@ String checkStates() {
   if (message == '') {
     return '';
   } else {
-    return message + ' died.';
+    return message + ' eliminated.';
   }
 }

@@ -68,3 +68,13 @@ class Character {
     this.energy,
   });
 }
+
+class Story {
+  String? title; // skill name
+  String? desc; // skill description
+
+  Story({
+    this.title,
+    this.desc,
+  });
+}

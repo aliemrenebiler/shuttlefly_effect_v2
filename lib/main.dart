@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '/screens/homescreen.dart';
 import '/screens/choosescreen.dart';
 import '/screens/gamescreen.dart';
+import '/screens/storyscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/homescreen',
       routes: {
         '/homescreen': (context) => const HomeScreen(),
+        '/storyscreen': (context) => const StoryScreen(),
         '/choosescreen': (context) => const ChooseScreen(),
         '/gamescreen': (context) => const GameScreen(),
       },
