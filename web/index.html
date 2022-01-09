@@ -100,5 +100,22 @@
       loadMainDartJs();
     }
   </script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-analytics.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDB859DO9HwDpOKvUHeYRDEzIxsfYEOC_I",
+      authDomain: "ytu-ce-araproje.firebaseapp.com",
+      projectId: "ytu-ce-araproje",
+      storageBucket: "ytu-ce-araproje.appspot.com",
+      messagingSenderId: "894101027782",
+      appId: "1:894101027782:web:739999101905961f0a10c7"
+    };
+  
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </body>
 </html>
