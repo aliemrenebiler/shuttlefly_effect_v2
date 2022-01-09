@@ -268,7 +268,7 @@ class _CharStateBoxState extends State<CharStateBox> {
                         ),
                         Expanded(
                           child: StateValueBox(
-                            text: 'Moral',
+                            text: 'Morale',
                             color: sePurple,
                             dColor: seDarkPurple,
                             value: widget.char.psycho!,
