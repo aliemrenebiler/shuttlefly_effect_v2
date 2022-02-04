@@ -1,5 +1,5 @@
 name: shuttlefly_effect_v2
-description: A Storytelling Space Game.
+description: A Storytelling Space Game
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
