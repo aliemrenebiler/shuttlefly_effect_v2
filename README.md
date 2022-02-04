@@ -19,7 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 
 For Android Virtual Device (ADV):
 - Choose the desired ADV on Visual Studio Code.
-   - After ADV is started, open main.dart file and click 'Run without debugging'.
+- After ADV is started, open main.dart file and click 'Run without debugging'.
 
 For Web:
 - run this command on Visual Studio Code terminal:
