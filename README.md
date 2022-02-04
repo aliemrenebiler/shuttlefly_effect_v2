@@ -1,6 +1,9 @@
 # shuttlefly_effect_v2
 
-A Storytelling Space Game
+This project is a storytelling space game. It it coded on Flutter, connected to a read-only Firebase database. It is designed as Yildiz Technical University Computer Engineering Midterm Project.
+
+Collaborated with Kübra Tunç
+- https://github.com/kubratunc
 
 ## Getting Started
 
